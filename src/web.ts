@@ -65,7 +65,7 @@ export class FirebaseAnalyticsWeb
    * @param options - userId: unique identifier of the user to log
    * Platform: Web/Android/iOS
    */
-  setUserId(options: { userId: string }): Promise<void> {
+  setUserId(options: { userId: null | string }): Promise<void> {
     return new Promise(async (resolve, reject) => {
       await this.ready;
 
@@ -74,12 +74,12 @@ export class FirebaseAnalyticsWeb
         return;
       }
 
-      const { userId } = options || { userId: undefined };
-
-      if (!userId) {
+      if (!("userId" in options)) {
         reject("userId property is missing");
         return;
       }
+
+      const { userId = null } = options;
 
       this.analyticsRef.setUserId(userId);
       resolve();
@@ -92,7 +92,7 @@ export class FirebaseAnalyticsWeb
    *                  value: The value of the user property.
    * Platform: Web/Android/iOS
    */
-  setUserProperty(options: { name: string; value: string }): Promise<void> {
+  setUserProperty(options: { name: string; value: null | string }): Promise<void> {
     return new Promise(async (resolve, reject) => {
       await this.ready;
 
@@ -101,17 +101,17 @@ export class FirebaseAnalyticsWeb
         return;
       }
 
-      const { name, value } = options || { name: undefined, value: undefined };
-
-      if (!name) {
+      if (!("name" in options)) {
         reject("name property is missing");
         return;
       }
 
-      if (!value) {
+      if (!("value" in options)) {
         reject("value property is missing");
         return;
       }
+
+      const { name, value = null } = options || {};
 
       let property: any = {};
       property[name] = value;

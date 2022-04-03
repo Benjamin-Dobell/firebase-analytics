@@ -25,6 +25,9 @@ public class FirebaseAnalytics: CAPPlugin {
         if let userId = call.getString("userId") {
             Analytics.setUserID(userId)
             call.resolve()
+        } else if call.dictionaryRepresentation["userId"] is NSNull {
+            Analytics.setUserID(nil)
+            call.resolve()
         } else {
             call.reject("userId property is missing")
         }
@@ -34,15 +37,12 @@ public class FirebaseAnalytics: CAPPlugin {
     /// - Parameter call: name - The name of the user property to set.
     ///                   value - The value of the user property.
     @objc func setUserProperty(_ call: CAPPluginCall) {
-        if let name = call.getString("name"), let value = call.getString("value") {
+        if let name = call.getString("name") {
+            let value = call.getString("value")
             Analytics.setUserProperty(value, forName: name)
             call.resolve()
         } else {
-            if call.getString("name") != nil {
-                call.reject("value property is missing")
-            } else {
-                call.reject("name property is missing");
-            }
+            call.reject("name property is missing");
         }
     }
 

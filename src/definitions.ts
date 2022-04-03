@@ -1,7 +1,7 @@
 export interface FirebaseAnalyticsPlugin {
   initializeFirebase(options: FirebaseInitOptions): Promise<any>;
-  setUserId(options: { userId: string }): Promise<void>;
-  setUserProperty(options: { name: string; value: string }): Promise<void>;
+  setUserId(options: { userId: null | string }): Promise<void>;
+  setUserProperty(options: { name: string; value: null | string }): Promise<void>;
   getAppInstanceId(): Promise<{ instanceId: string | null }>;
   setScreenName(options: {
     screenName: string;
